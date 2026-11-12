@@ -1,0 +1,50 @@
+[
+  {
+    "id": "security-triage",
+    "title": "Security Triage",
+    "group": "agent",
+    "path": "skills/agent/security-triage.md"
+  },
+  {
+    "id": "web-header-review",
+    "title": "Web Header Review",
+    "group": "agent",
+    "path": "skills/agent/web-header-review.md"
+  },
+  {
+    "id": "report-writer",
+    "title": "Report Writer",
+    "group": "agent",
+    "path": "skills/agent/report-writer.md"
+  },
+  {
+    "id": "scan-result-explainer",
+    "title": "Scan Result Explainer",
+    "group": "agent",
+    "path": "skills/agent/scan-result-explainer.md"
+  },
+  {
+    "id": "learning-tutor",
+    "title": "Learning Tutor",
+    "group": "learning",
+    "path": "skills/learning/learning-tutor.md"
+  },
+  {
+    "id": "lab-coach",
+    "title": "Lab Coach",
+    "group": "learning",
+    "path": "skills/learning/lab-coach.md"
+  },
+  {
+    "id": "roadmap-planner",
+    "title": "Roadmap Planner",
+    "group": "learning",
+    "path": "skills/learning/roadmap-planner.md"
+  },
+  {
+    "id": "secure-code-review",
+    "title": "Secure Code Review",
+    "group": "agent",
+    "path": "skills/agent/secure-code-review.md"
+  }
+]

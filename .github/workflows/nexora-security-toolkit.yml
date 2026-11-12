@@ -35,3 +35,11 @@ jobs:
         run: python nexora_security.py --help
       - name: Check dashboard JavaScript syntax
         run: node --check dashboard/dashboard.js
+      - name: Check AI assistant JavaScript syntax
+        run: node --check dashboard/ai-assistant.js
+      - name: Run local AI assistant tests
+        run: python -m unittest discover -s tests -p 'test_ai_assistant.py' -v
+      - name: Check Skills Library JavaScript syntax
+        run: node --check dashboard/skills.js
+      - name: Compile Python modules
+        run: python -m py_compile ai_assistant.py nexora_security.py integrations.py

@@ -54,7 +54,7 @@
   }
   async function loadTools(){
     const grid=$("#toolGrid");grid.replaceChildren(el("div","empty-state","Loading integration registry…"));
-    try{const response=await fetch("../integrations.json",{cache:"no-store"});if(!response.ok)throw new Error("HTTP "+response.status);const data=await response.json();if(!Array.isArray(data))throw new Error("Invalid registry");tools=data;renderTools();}
+    try{const response=await fetch("/api/integrations",{cache:"no-store"});if(!response.ok)throw new Error("HTTP "+response.status);const payload=await response.json();const data=payload.integrations;if(!Array.isArray(data))throw new Error("Invalid registry");tools=data;renderTools();}
     catch{tools=[];grid.replaceChildren();const e=el("div","empty-state");e.append(el("span","","⬡"),el("strong","","Registry could not be loaded"),el("p","","Open the dashboard through the local project folder or a local static server. See the README."));grid.append(e);renderOverview();}
   }
   function renderTools(){
