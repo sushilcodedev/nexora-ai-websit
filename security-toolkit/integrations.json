@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Nuclei",
+    "license": "MIT",
+    "purpose": "Template-based vulnerability checks; active scanning requires policy and scope review.",
+    "binary": "nuclei",
+    "repository": "https://github.com/projectdiscovery/nuclei",
+    "status": "Registry and local binary detection only; not executed"
+  },
+  {
+    "name": "ProjectDiscovery httpx",
+    "license": "MIT",
+    "purpose": "HTTP service probing and metadata collection.",
+    "binary": "httpx",
+    "repository": "https://github.com/projectdiscovery/httpx",
+    "status": "Registry and local binary detection only; not executed"
+  },
+  {
+    "name": "Subfinder",
+    "license": "MIT",
+    "purpose": "Passive subdomain discovery; review data-source terms.",
+    "binary": "subfinder",
+    "repository": "https://github.com/projectdiscovery/subfinder",
+    "status": "Registry and local binary detection only; not executed"
+  },
+  {
+    "name": "Katana",
+    "license": "MIT",
+    "purpose": "Web crawling; request volume must be controlled.",
+    "binary": "katana",
+    "repository": "https://github.com/projectdiscovery/katana",
+    "status": "Registry and local binary detection only; not executed"
+  },
+  {
+    "name": "OWASP ZAP",
+    "license": "Apache-2.0",
+    "purpose": "Web application security proxy and scanner.",
+    "binary": "zap.sh",
+    "repository": "https://github.com/zaproxy/zaproxy",
+    "status": "Registry and local binary detection only; not executed"
+  }
+]
