@@ -304,6 +304,27 @@ def cmd_doctor(_: argparse.Namespace) -> int:
     print("Detection only: no scanners were started and no network requests were made.")
     return 0
 
+def cmd_import_results(args: argparse.Namespace) -> int:
+    from integrations import import_file, markdown_report
+    source = Path(args.input)
+    rows = import_file(args.tool, source)
+    output = Path(args.output)
+    markdown = Path(args.markdown)
+    if not output.is_absolute():
+        output = ROOT / output
+    if not markdown.is_absolute():
+        markdown = ROOT / markdown
+    output.parent.mkdir(parents=True, exist_ok=True)
+    markdown.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps({"tool": args.tool, "count": len(rows), "findings": rows}, indent=2) + "\\n", encoding="utf-8")
+    markdown.write_text(markdown_report(args.tool, rows), encoding="utf-8")
+    print(f"Imported {len(rows)} local record(s).")
+    print(f"JSON: {output}")
+    print(f"Markdown: {markdown}")
+    print("No scanner was executed and no network request was made.")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=APP_NAME)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -343,6 +364,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     integrations = sub.add_parser("integrations", help="list documented open-source integrations")
     integrations.set_defaults(func=cmd_integrations)
+
+    imported = sub.add_parser("import-results", help="normalize a local scanner output file; does not run scanners")
+    imported.add_argument("--tool", choices=["nuclei", "zap", "httpx", "katana", "subfinder"], required=True)
+    imported.add_argument("--input", required=True, help="local JSONL or JSON report file")
+    imported.add_argument("--output", default="reports/imported-findings.json")
+    imported.add_argument("--markdown", default="reports/imported-findings.md")
+    imported.set_defaults(func=cmd_import_results)
 
     doctor = sub.add_parser("doctor", help="check local prerequisites and optional tool paths")
     doctor.set_defaults(func=cmd_doctor)
