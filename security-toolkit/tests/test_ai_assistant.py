@@ -45,7 +45,7 @@ class AssistantInputTests(unittest.TestCase):
 
     def test_prompt_separates_skill_with_real_newlines(self):
         messages = build_messages("sample evidence", "", "security-triage")
-        self.assertIn("\\n\\nSelected NEXORA skill:", messages[0]["content"])
+        self.assertIn("\n\nSelected NEXORA skill:", messages[0]["content"])
         self.assertNotIn("\\\\n\\\\nSelected NEXORA skill:", messages[0]["content"])
 
     def test_context_limit_is_enforced(self):
