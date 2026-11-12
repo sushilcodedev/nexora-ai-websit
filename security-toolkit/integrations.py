@@ -16,12 +16,12 @@ SEVERITIES = {
     "3": "HIGH", "2": "MEDIUM", "1": "LOW", "0": "INFORMATIONAL",
 }
 SECRET_PATTERNS = [
-    re.compile(r"(?i)(authorization\\s*:\\s*(?:bearer|basic)\\s+)[^\\s,;]+"),
-    re.compile(r"(?i)((?:api[_-]?key|access[_-]?token|refresh[_-]?token|client[_-]?secret|password|passwd|secret)\\s*[=:]\\s*)[\\\"']?[^\\s,;\\\"']+"),
-    re.compile(r"(?i)((?:set-cookie|cookie)\\s*:\\s*)[^\\r\\n]+"),
-    re.compile(r"(?i)((?:x-api-key|x-auth-token)\\s*:\\s*)[^\\r\\n]+"),
+    re.compile(r"(?i)(authorization\s*:\s*(?:bearer|basic)\s+)[^\s,;]+"),
+    re.compile(r"(?i)((?:api[_-]?key|access[_-]?token|refresh[_-]?token|client[_-]?secret|password|passwd|secret)\s*[=:]\s*)[^\s,;]+"),
+    re.compile(r"(?i)((?:set-cookie|cookie)\s*:\s*)[^\r\n]+"),
+    re.compile(r"(?i)((?:x-api-key|x-auth-token)\s*:\s*)[^\r\n]+"),
 ]
-URL_CREDENTIALS = re.compile(r"(?i)(https?://)[^/@\\s:]+:[^/@\\s]+@")
+URL_CREDENTIALS = re.compile(r"(?i)(https?://)[^/@\s:]+:[^/@\s]+@")
 
 
 def clean(value: Any, limit: int = 4000) -> str:
