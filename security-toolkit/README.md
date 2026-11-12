@@ -29,6 +29,28 @@ python nexora_security.py scope add --domain example.com --authorization "I own 
 python nexora_security.py headers --url https://example.com
 ~~~
 Replace example.com with an authorized domain. The acknowledgement flag is a reminder, not legal proof.
+## Local dashboard
+
+The dashboard is a static, local-first browser interface. It stores scope records, findings, learning progress, and export counts in your browser's localStorage. It does not transmit this data to a server. Do not use a shared/public computer for sensitive notes.
+
+Start a local server from the security-toolkit directory:
+
+~~~powershell
+py -m http.server 8000
+~~~
+
+Then open http://127.0.0.1:8000/dashboard/ in your browser. Keep the terminal window open while using the dashboard. On Linux/macOS use `python3 -m http.server 8000`.
+
+Dashboard features:
+- Overview and recent local activity
+- Authorized asset records and exclusions
+- Open-source integration registry
+- Manual finding register with severity and status
+- Markdown report and JSON backup import/export
+- Beginner learning checklist
+
+The dashboard does not launch scanners or verify authorization. Use the Python CLI for the existing low-impact, scope-gated header check.
+
 ## Open-source integrations
 See docs/OPEN_SOURCE_INTEGRATIONS.md and docs/INTEGRATION_ROADMAP.md. The registry and doctor commands only list projects and detect local executable names. NEXORA does not install or execute third-party scanners in this release.
 ## Learning
