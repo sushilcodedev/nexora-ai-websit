@@ -1,5 +1,5 @@
 # Third-party notices
-NEXORA Security Toolkit 0.2.0 does not bundle or copy third-party executable code, scanner engines, templates, or datasets.
+NEXORA Security Toolkit 0.4.0 does not bundle or copy third-party executable code, scanner engines, templates, or datasets.
 Optional independent projects; upstream repository metadata identified these licences during this update:
 - Nuclei — MIT: https://github.com/projectdiscovery/nuclei
 - ProjectDiscovery httpx — MIT: https://github.com/projectdiscovery/httpx
