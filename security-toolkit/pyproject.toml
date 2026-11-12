@@ -1,0 +1,11 @@
+[project]
+name = "nexora-security-toolkit"
+version = "0.1.0"
+description = "Local-first beginner toolkit for authorized web security learning and bug bounty workflows"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = []
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
