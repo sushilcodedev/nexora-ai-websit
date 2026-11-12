@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="NEXORA local AI security assistant powered by Ollama.">
+  <title>NEXORA AI Security Assistant</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    .assistant-wrap{max-width:1100px;margin:0 auto}.assistant-card{background:linear-gradient(145deg,#151e30,#101827);border:1px solid #29364d;border-radius:17px;padding:22px;margin:18px 0}.assistant-label{display:block;color:#b9c5d8;font-size:11px;font-weight:600;margin:0 0 8px}.assistant-input{width:100%;min-height:240px;resize:vertical;border:1px solid #34415a;background:#0d1524;color:#edf3ff;border-radius:10px;padding:14px;outline:none;font:12px/1.7 Consolas,monospace}.assistant-input:focus,.assistant-context:focus,.assistant-select:focus{border-color:#8c7cff;box-shadow:0 0 0 3px #8c7cff20}.assistant-context,.assistant-select{width:100%;border:1px solid #34415a;background:#0d1524;color:#edf3ff;border-radius:8px;padding:11px 12px;font-size:12px}.assistant-controls{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}.assistant-status{display:flex;align-items:center;gap:9px;font-size:11px;color:#a9b7ce;margin:12px 0}.assistant-status .dot{width:8px;height:8px;border-radius:50%;background:#e6b76e}.assistant-status.online .dot{background:#43d6a0;box-shadow:0 0 10px #43d6a088}.assistant-status.offline .dot{background:#ff7d8d}.assistant-result{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75;color:#dce6f7;font-size:12px;background:#0c1422;border:1px solid #2b3850;border-radius:11px;padding:18px;min-height:120px}.assistant-result h2,.assistant-result h3{color:#fff}.assistant-note{font-size:10px;line-height:1.7;color:#92a0b7}.assistant-actions{display:flex;gap:10px;flex-wrap:wrap}.assistant-actions button:disabled{opacity:.5;cursor:not-allowed}.assistant-back{color:#b3a8ff;font-size:11px}.assistant-error{color:#ff9ca7}@media(max-width:650px){.assistant-controls{grid-template-columns:1fr}.assistant-card{padding:15px}.page-heading{align-items:flex-start;flex-direction:column}}
+  </style>
+  <script src="ai-assistant.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="index.html"><span class="brand-mark">N</span><span><strong>NEXORA</strong><small>SECURITY WORKSPACE</small></span></a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <a class="nav-item" href="index.html"><span>◫</span> Dashboard</a>
+        <a class="nav-item active" href="ai-assistant.html"><span>✧</span> AI Security Assistant</a>
+      </nav>
+      <div class="sidebar-bottom"><div class="local-card"><span class="local-dot"></span><div><strong>Local-only mode</strong><small>Analysis runs through Ollama on this PC</small></div></div><div class="sidebar-version">NEXORA SECURITY <span>AI v1.0</span></div></div>
+    </aside>
+    <main class="main-area">
+      <header class="topbar"><div class="breadcrumb"><a href="index.html">Workspace</a> <span>/</span> <strong>AI Security Assistant</strong></div><div class="top-actions"><span class="privacy-pill"><i></i> LOCAL AI</span></div></header>
+      <div class="assistant-wrap">
+        <div class="page-heading"><div><div class="eyebrow">DEFENSIVE ANALYSIS / OLLAMA</div><h1>AI Security Assistant</h1><p>Understand scan output, assess evidence, and learn how to fix security issues.</p></div><a class="assistant-back" href="index.html">← Back to dashboard</a></div>
+        <div class="notice"><span class="notice-icon">ⓘ</span><div><strong>Safe-use boundary</strong><p>This assistant analyzes text you provide. It does not scan websites, run commands, exploit systems, or verify live vulnerabilities. Only assess assets you own or have explicit written permission to test. Redact passwords, tokens, cookies and personal data before pasting.</p></div></div>
+        <div class="assistant-status" id="connectionStatus"><span class="dot"></span><span>Checking local Ollama connection…</span></div>
+        <section class="assistant-card">
+          <label class="assistant-label" for="modelSelect">Local AI model</label>
+          <select class="assistant-select" id="modelSelect"><option value="deepseek-r1:8b">deepseek-r1:8b</option></select>
+          <div class="assistant-controls">
+            <label><span class="assistant-label">Authorized asset / context (optional)</span><input class="assistant-context" id="contextInput" maxlength="500" placeholder="Example: My own demo app running locally"></label>
+            <div><span class="assistant-label">Privacy</span><p class="assistant-note">Your pasted text is sent only to the Ollama service on 127.0.0.1. No paid API or cloud AI is used by this app.</p></div>
+          </div>
+          <label class="assistant-label" for="evidenceInput">Paste scan output, finding details, or security notes</label>
+          <textarea class="assistant-input" id="evidenceInput" maxlength="30000" placeholder="Paste sanitized output here…&#10;&#10;Example:&#10;URL: https://my-owned-demo.example&#10;HTTP status: 200&#10;Headers:&#10;Content-Security-Policy: (missing)&#10;X-Content-Type-Options: nosniff"></textarea>
+          <div class="assistant-actions" style="margin-top:14px"><button class="button button-primary" id="analyzeButton" type="button">✧ Analyze evidence locally</button><button class="button button-quiet" id="clearButton" type="button">Clear</button></div>
+          <p class="assistant-note" id="inputCount">0 / 30,000 characters. Avoid including secrets or personal information.</p>
+        </section>
+        <section class="assistant-card">
+          <div class="panel-heading"><div><h2>Analysis report</h2><p id="resultMeta">Your local AI analysis will appear here.</p></div><button class="button button-quiet" id="copyButton" type="button" disabled>Copy report</button></div>
+          <div class="assistant-result" id="resultOutput" aria-live="polite">No analysis yet. Paste sanitized evidence above and select Analyze.</div>
+        </section>
+        <p class="assistant-note">AI output can be wrong or incomplete. Verify recommendations manually in a permitted test environment. This is a learning aid, not a substitute for professional security review.</p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
