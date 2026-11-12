@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="NEXORA Security Toolkit — local-first workspace for authorized security learning and bug bounty work.">
+  <title>NEXORA Security — Local Security Workspace</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="dashboard.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="NEXORA Security home">
+        <span class="brand-mark">N</span>
+        <span><strong>NEXORA</strong><small>SECURITY WORKSPACE</small></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><span>◫</span> Overview</button>
+        <button class="nav-item" data-view="scope"><span>◎</span> Authorized scope</button>
+        <button class="nav-item" data-view="integrations"><span>⬡</span> Integrations</button>
+        <button class="nav-item" data-view="findings"><span>⌁</span> Findings</button>
+        <button class="nav-item" data-view="reports"><span>▤</span> Reports</button>
+        <button class="nav-item" data-view="learn"><span>⌘</span> Learning lab</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="local-card"><span class="local-dot"></span><div><strong>Local-only mode</strong><small>Your workspace stays in this browser</small></div></div>
+        <div class="sidebar-version">NEXORA SECURITY <span>v0.3.0</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="pageCrumb">Overview</strong></div>
+        <div class="top-actions"><span class="privacy-pill"><i></i> LOCAL STORAGE</span><button class="button button-quiet" id="exportBackup">Export backup ↓</button></div>
+      </header>
+
+      <section class="view active" id="view-overview">
+        <div class="page-heading">
+          <div><div class="eyebrow">SECURITY OPERATIONS / HOME</div><h1>Security workspace</h1><p>Organize authorized assets, track findings, and learn with a local-first toolkit.</p></div>
+          <button class="button button-primary" data-go="scope">＋ Add authorized asset</button>
+        </div>
+        <div class="notice"><span class="notice-icon">ⓘ</span><div><strong>Authorization comes first</strong><p>Only test systems you own or have explicit written permission to assess. A record here is a reminder—not proof of permission or a bug-bounty program's safe-harbor approval.</p></div></div>
+        <div class="stats-grid">
+          <article class="stat-card"><span class="stat-label">AUTHORIZED ASSETS</span><strong id="statAssets">0</strong><small>Locally recorded assets</small><span class="stat-icon">◎</span></article>
+          <article class="stat-card"><span class="stat-label">OPEN FINDINGS</span><strong id="statOpen">0</strong><small>Needs review or validation</small><span class="stat-icon">⌁</span></article>
+          <article class="stat-card"><span class="stat-label">INTEGRATIONS</span><strong id="statTools">—</strong><small>Documented upstream projects</small><span class="stat-icon">⬡</span></article>
+          <article class="stat-card"><span class="stat-label">REPORTS EXPORTED</span><strong id="statReports">0</strong><small>From this browser workspace</small><span class="stat-icon">▤</span></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><h2>Recent activity</h2><p>Your latest local workspace changes</p></div><span class="subtle-tag">LIVE LOCAL DATA</span></div>
+            <div id="activityList" class="activity-list"><div class="empty-state"><span>◷</span><strong>No activity yet</strong><p>Add an authorized asset or record a finding to begin.</p></div></div>
+          </article>
+          <article class="panel quick-panel">
+            <div class="panel-heading"><div><h2>Quick actions</h2><p>Common workspace tasks</p></div></div>
+            <button class="quick-action" data-go="scope"><span class="quick-icon violet">◎</span><span><strong>Register an asset</strong><small>Record permission and exclusions</small></span><b>→</b></button>
+            <button class="quick-action" data-go="findings"><span class="quick-icon orange">⌁</span><span><strong>Log a finding</strong><small>Document evidence responsibly</small></span><b>→</b></button>
+            <button class="quick-action" data-go="integrations"><span class="quick-icon blue">⬡</span><span><strong>Explore integrations</strong><small>Review open-source tools</small></span><b>→</b></button>
+            <button class="quick-action" data-go="learn"><span class="quick-icon green">⌘</span><span><strong>Continue learning</strong><small>Free security learning resources</small></span><b>→</b></button>
+          </article>
+        </div>
+        <article class="panel workflow-panel"><div class="panel-heading"><div><h2>Safe testing workflow</h2><p>Keep every assessment deliberate and documented.</p></div></div><div class="workflow-steps"><div><span>01</span><strong>Verify permission</strong><small>Read scope, exclusions and rules.</small></div><i>→</i><div><span>02</span><strong>Plan minimally</strong><small>Choose low-impact checks.</small></div><i>→</i><div><span>03</span><strong>Capture evidence</strong><small>Redact secrets and personal data.</small></div><i>→</i><div><span>04</span><strong>Report clearly</strong><small>Explain impact and reproduction.</small></div></div></article>
+      </section>
+
+      <section class="view" id="view-scope">
+        <div class="page-heading"><div><div class="eyebrow">ASSET MANAGEMENT</div><h1>Authorized scope</h1><p>Keep permission records and excluded hosts visible before testing.</p></div></div>
+        <div class="notice"><span class="notice-icon">!</span><div><strong>Important scope reminder</strong><p>Never infer permission from a domain being public, from a company name, or from a bug-bounty listing alone. Check the current program policy and exact asset.</p></div></div>
+        <div class="two-column">
+          <article class="panel"><div class="panel-heading"><div><h2>Register an asset</h2><p>Store a local reference to your written authorization.</p></div></div>
+            <form id="scopeForm" class="form-stack">
+              <label>Domain or hostname<input name="domain" required placeholder="example.com" autocomplete="off"></label>
+              <label>Permission reference<input name="authorization" required placeholder="Owned domain / policy URL / approval reference"></label>
+              <label>Excluded hosts (optional)<textarea name="excluded" rows="2" placeholder="admin.example.com, staging.example.com"></textarea></label>
+              <label class="check-label"><input type="checkbox" name="confirm" required><span>I have verified ownership or explicit written permission and reviewed the applicable scope and exclusions.</span></label>
+              <button class="button button-primary" type="submit">＋ Save local scope record</button>
+              <p class="form-hint">This confirmation is a personal reminder only. NEXORA does not verify legal authorization.</p>
+            </form>
+          </article>
+          <article class="panel"><div class="panel-heading"><div><h2>Scope checklist</h2><p>Before any security test</p></div></div><ul class="checklist"><li>Exact hostname or asset is listed as in-scope</li><li>Excluded domains and paths are understood</li><li>Allowed testing methods are checked</li><li>Rate limits and testing windows are known</li><li>Safe-harbor and disclosure rules are read</li><li>Written permission can be produced if requested</li></ul></article>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h2>Saved assets</h2><p>Records stored only in this browser</p></div><span id="scopeCount" class="subtle-tag">0 ASSETS</span></div><div id="scopeList" class="table-wrap"></div></article>
+      </section>
+
+      <section class="view" id="view-integrations">
+        <div class="page-heading"><div><div class="eyebrow">OPEN-SOURCE ECOSYSTEM</div><h1>Tool integrations</h1><p>Professional tools, transparent licences, and clear execution boundaries.</p></div><button class="button button-quiet" id="refreshTools">↻ Refresh registry</button></div>
+        <div class="notice"><span class="notice-icon">ⓘ</span><div><strong>Registry mode — no scanners are running</strong><p>This dashboard only displays the upstream tool registry. It does not install, launch, or send targets to third-party scanners. Use each tool only within verified authorization and its own terms.</p></div></div>
+        <div id="toolGrid" class="tool-grid"><div class="empty-state">Loading integration registry…</div></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Integration standards</h2><p>What NEXORA requires before enabling an adapter</p></div></div><div class="standards-grid"><div><strong>Scope enforcement</strong><p>Exact host validation and exclusions before execution.</p></div><div><strong>Explicit approval</strong><p>Show planned actions and request confirmation per run.</p></div><div><strong>Safe defaults</strong><p>Bounded timeouts, conservative rates and a stop control.</p></div><div><strong>Audit trail</strong><p>Record versions, options and authorization references.</p></div></div></article>
+      </section>
+
+      <section class="view" id="view-findings">
+        <div class="page-heading"><div><div class="eyebrow">VULNERABILITY TRACKING</div><h1>Findings</h1><p>Record observations with evidence, severity and a clear validation status.</p></div><button class="button button-primary" id="showFindingForm">＋ New finding</button></div>
+        <article class="panel form-panel hidden" id="findingPanel"><div class="panel-heading"><div><h2>Record a finding</h2><p>Only add findings from authorized assessments or legal training labs.</p></div><button class="icon-button" id="closeFindingForm" aria-label="Close form">×</button></div>
+          <form id="findingForm" class="form-grid">
+            <label>Title<input name="title" required maxlength="120" placeholder="e.g. Missing security header"></label>
+            <label>Asset<select name="asset" id="findingAsset" required><option value="">Select a recorded asset</option></select></label>
+            <label>Severity<select name="severity"><option>Informational</option><option>Low</option><option selected>Medium</option><option>High</option><option>Critical</option></select></label>
+            <label>Status<select name="status"><option>Needs validation</option><option>Confirmed</option><option>Submitted</option><option>Resolved</option><option>Not applicable</option></select></label>
+            <label class="full-span">Description<textarea name="description" rows="3" required placeholder="What did you observe? Avoid secrets and personal data."></textarea></label>
+            <label class="full-span">Evidence / reproduction notes<textarea name="evidence" rows="3" placeholder="Minimal reproducible steps, redacted evidence, expected vs actual result"></textarea></label>
+            <div class="full-span"><button class="button button-primary" type="submit">Save finding locally</button></div>
+          </form>
+        </article>
+        <article class="panel"><div class="panel-heading"><div><h2>Finding register</h2><p>Local records — not automatically verified vulnerabilities</p></div><select id="findingFilter" class="filter-select"><option value="all">All statuses</option><option value="Needs validation">Needs validation</option><option value="Confirmed">Confirmed</option><option value="Submitted">Submitted</option><option value="Resolved">Resolved</option><option value="Not applicable">Not applicable</option></select></div><div id="findingList" class="table-wrap"></div></article>
+      </section>
+
+      <section class="view" id="view-reports">
+        <div class="page-heading"><div><div class="eyebrow">DOCUMENTATION</div><h1>Reports & exports</h1><p>Generate a clean Markdown report from findings you recorded.</p></div></div>
+        <div class="content-grid">
+          <article class="panel"><div class="panel-heading"><div><h2>Export findings report</h2><p>Includes recorded title, severity, status and notes.</p></div></div><div class="report-preview"><div class="preview-top"><span>MARKDOWN REPORT</span><span class="live-dot">● LOCAL</span></div><h3>NEXORA Security Assessment</h3><p id="reportPreviewText">Your report preview will appear here after you add findings.</p><div class="preview-lines"><i></i><i></i><i></i><i></i></div></div><button class="button button-primary full-button" id="downloadReport">↓ Download Markdown report</button></article>
+          <article class="panel"><div class="panel-heading"><div><h2>Workspace backup</h2><p>Export or restore your local data.</p></div></div><p class="muted-copy">Your asset records and findings are stored in this browser only. Export a backup before clearing browser data or switching devices.</p><button class="button button-secondary full-button" id="exportBackupAlt">↓ Download JSON backup</button><label class="button button-quiet full-button import-label">↑ Import JSON backup<input type="file" id="importBackup" accept="application/json"></label><p class="form-hint">Import replaces this browser's current NEXORA workspace data.</p></article>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h2>Report quality checklist</h2><p>Help a security team reproduce and understand a valid issue.</p></div></div><ul class="checklist"><li>Clear title and affected in-scope asset</li><li>Impact explained without exaggeration</li><li>Minimal, repeatable steps</li><li>Expected and actual results</li><li>Redacted screenshots or request/response evidence</li><li>No exposed credentials, tokens or personal data</li></ul></article>
+      </section>
+
+      <section class="view" id="view-learn">
+        <div class="page-heading"><div><div class="eyebrow">BEGINNER DEVELOPMENT</div><h1>Learning lab</h1><p>Build real security fundamentals using free, legal training environments.</p></div><span class="subtle-tag">BEGINNER TRACK</span></div>
+        <div class="learning-banner"><div><div class="eyebrow">YOUR NEXT MISSION</div><h2>Learn the method. Respect the scope.</h2><p>Practice in intentionally vulnerable labs before testing real programs. Keep notes, understand impact, and write reproducible reports.</p></div><span class="learning-symbol">⌘</span></div>
+        <div class="resource-grid">
+          <a class="resource-card" href="https://portswigger.net/web-security" target="_blank" rel="noopener noreferrer"><span class="resource-icon violet">◈</span><small>FREE WEB SECURITY ACADEMY</small><strong>PortSwigger Web Security Academy</strong><p>Interactive lessons and labs covering common web vulnerabilities.</p><b>Open learning platform ↗</b></a>
+          <a class="resource-card" href="https://owasp.org/www-project-juice-shop/" target="_blank" rel="noopener noreferrer"><span class="resource-icon orange">◉</span><small>INTENTIONALLY VULNERABLE APP</small><strong>OWASP Juice Shop</strong><p>Practice web security concepts in a deliberately insecure application.</p><b>View project ↗</b></a>
+          <a class="resource-card" href="https://owasp.org/www-project-web-security-testing-guide/" target="_blank" rel="noopener noreferrer"><span class="resource-icon blue">▤</span><small>OPEN TESTING GUIDE</small><strong>OWASP Web Security Testing Guide</strong><p>A structured reference for understanding web application testing.</p><b>Read the guide ↗</b></a>
+          <a class="resource-card" href="https://www.hackthebox.com/" target="_blank" rel="noopener noreferrer"><span class="resource-icon green">⬡</span><small>LAB PLATFORM</small><strong>Hack The Box</strong><p>Hands-on cybersecurity labs; check free-tier terms and rules.</p><b>Explore labs ↗</b></a>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h2>30-day beginner roadmap</h2><p>Tick off topics as you learn. Progress is saved in this browser.</p></div><span id="learningProgress" class="subtle-tag">0 / 12 COMPLETE</span></div><div id="learningList" class="learning-list"></div></article>
+      </section>
+
+      <footer class="footer"><span>© NEXORA Security Toolkit</span><span>Built for learning and authorized security work · Local-first</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
