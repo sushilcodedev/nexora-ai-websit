@@ -1,5 +1,5 @@
 # NEXORA Security Toolkit
-Version 0.3.0 · Beginner-friendly MVP · Free and local-first
+Version 0.4.0 · Beginner-friendly toolkit · Free and local-first
 
 A local-first toolkit for learning web security and organizing authorized bug-bounty work. It includes scope records, a low-impact HTTP header checker, Markdown reports, an open-source integration registry, a local Ollama AI security assistant, and a learner roadmap.
 
@@ -11,7 +11,9 @@ A local-first toolkit for learning web security and organizing authorized bug-bo
 - Report Builder: Markdown finding template with an in-scope asset gate.
 - Open-source registry: Nuclei, httpx, Subfinder, Katana and OWASP ZAP. These are documented, not executed by this release.
 - Local AI Security Assistant: analyze sanitized scan output using Ollama on this computer.
-- AI-agent safety guidance and 30-day learner curriculum.
+- Seven reusable AI-agent and learning skills in `skills/` and a dashboard Skills Library.
+- Local scanner-result import adapters for Nuclei, OWASP ZAP, httpx, Katana and Subfinder JSON/JSONL exports. These adapters parse local files only; they do not install or run scanners.
+- 30-day learner curriculum.
 - No paid APIs or cloud AI services. Python standard library only.
 
 ## Quick start — Windows
@@ -22,6 +24,7 @@ Run these commands from the `security-toolkit` folder:
 py nexora_security.py init
 py nexora_security.py integrations
 py nexora_security.py doctor
+py nexora_security.py import-results --tool nuclei --input path\\to\\nuclei.jsonl
 py -m unittest discover -s tests -v
 ~~~
 
@@ -55,6 +58,28 @@ py ai_assistant.py
 Keep the terminal and Ollama running while using it. The server binds only to `127.0.0.1`. It talks to Ollama at `127.0.0.1:11434`; pasted evidence is not sent to a remote AI provider.
 
 The assistant accepts sanitized text evidence up to 30,000 characters. It provides a beginner-friendly explanation, estimated severity and confidence, safe lab verification ideas, remediation, and limitations. It does not run commands, fetch URLs, scan websites, or independently confirm a vulnerability. AI output may be incorrect and must be reviewed.
+
+## Import existing scanner output (local files only)
+
+NEXORA can normalize saved output from Nuclei, OWASP ZAP, httpx, Katana, and Subfinder into JSON and Markdown reports. It does not launch these tools or send targets anywhere.
+
+~~~powershell
+py nexora_security.py import-results --tool nuclei --input .\\nuclei-results.jsonl
+py nexora_security.py import-results --tool zap --input .\\zap-report.json
+py nexora_security.py import-results --tool httpx --input .\\httpx.jsonl
+py nexora_security.py import-results --tool katana --input .\\katana.jsonl
+py nexora_security.py import-results --tool subfinder --input .\\subdomains.txt
+~~~
+
+The importer redacts common token/cookie patterns, limits input files to 10 MB and records to 10,000, and labels discovery/metadata records as informational. Review all imported data; scanner output can contain false positives. Run upstream scanners separately only after reviewing their documentation, licence, current version, exact authorized scope, exclusions, rate limits and program rules. No automatic scanner execution is enabled.
+
+## Skills library
+
+Open the dashboard's **Skills Library** to browse seven Markdown skills:
+- Agent skills: security triage, HTTP header review, report writing, scan-result explanation, secure code review.
+- Learning skills: beginner cybersecurity tutor, legal lab coach, learning roadmap planner.
+
+These are reusable instructions and educational material. They do not grant permission or execute actions.
 
 ## Linux/macOS
 
