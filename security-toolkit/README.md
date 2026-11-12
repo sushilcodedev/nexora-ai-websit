@@ -11,7 +11,7 @@ A local-first toolkit for learning web security and organizing authorized bug-bo
 - Report Builder: Markdown finding template with an in-scope asset gate.
 - Open-source registry: Nuclei, httpx, Subfinder, Katana and OWASP ZAP. These are documented, not executed by this release.
 - Local AI Security Assistant: analyze sanitized scan output using Ollama on this computer.
-- Seven reusable AI-agent and learning skills in `skills/` and a dashboard Skills Library.
+- Eight reusable AI-agent and learning skills in `skills/` and a dashboard Skills Library.
 - Local scanner-result import adapters for Nuclei, OWASP ZAP, httpx, Katana and Subfinder JSON/JSONL exports. These adapters parse local files only; they do not install or run scanners.
 - 30-day learner curriculum.
 - No paid APIs or cloud AI services. Python standard library only.
@@ -75,7 +75,7 @@ The importer redacts common token/cookie patterns, limits input files to 10 MB a
 
 ## Skills library
 
-Open the dashboard's **Skills Library** to browse seven Markdown skills:
+Open the dashboard's **Skills Library** to browse eight Markdown skills:
 - Agent skills: security triage, HTTP header review, report writing, scan-result explanation, secure code review.
 - Learning skills: beginner cybersecurity tutor, legal lab coach, learning roadmap planner.
 
