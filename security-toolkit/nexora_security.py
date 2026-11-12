@@ -19,13 +19,13 @@ from pathlib import Path
 from typing import Any
 
 APP_NAME = "NEXORA Security Toolkit"
-VERSION = "0.2.0"
+VERSION = "0.4.0"
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / ".nexora"
 SCOPE_FILE = DATA_DIR / "scope.json"
 REPORT_DIR = ROOT / "reports"
 INTEGRATIONS_FILE = ROOT / "integrations.json"
-USER_AGENT = "NEXORA-Security-Toolkit/0.2.0 (low-impact-header-checker)"
+USER_AGENT = "NEXORA-Security-Toolkit/0.4.0 (low-impact-header-checker)"
 
 
 class ScopeError(ValueError):
