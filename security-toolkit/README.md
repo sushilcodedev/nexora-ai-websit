@@ -1,63 +1,85 @@
 # NEXORA Security Toolkit
-Version 0.2.0 · Beginner-friendly MVP · Free and local-first
-A local-first toolkit for learning web security and organizing authorized bug-bounty work. It includes scope records, a low-impact HTTP header checker, Markdown reports, an open-source integration registry, AI-agent skills, and a learner roadmap.
-> Only assess systems you own or have explicit written permission to test. Program scope and rules override this toolkit. The header checker sends one HEAD request and does not follow redirects. It is not a penetration tester.
+Version 0.3.0 · Beginner-friendly MVP · Free and local-first
+
+A local-first toolkit for learning web security and organizing authorized bug-bounty work. It includes scope records, a low-impact HTTP header checker, Markdown reports, an open-source integration registry, a local Ollama AI security assistant, and a learner roadmap.
+
+> Only assess systems you own or have explicit written permission to test. Program scope and rules override this toolkit. The header checker sends one HEAD request and does not follow redirects. The AI assistant analyzes text you supply; it does not scan or exploit targets.
+
 ## Features
 - Scope Manager: authorized domains and exclusions.
 - Header Checker: one HTTP HEAD request on a recorded in-scope URL.
 - Report Builder: Markdown finding template with an in-scope asset gate.
-- Open-source registry: Nuclei, httpx, Subfinder, Katana and OWASP ZAP.
-- AI-agent safety skill and 30-day learner curriculum.
-- No paid APIs or cloud services. Python standard library only.
+- Open-source registry: Nuclei, httpx, Subfinder, Katana and OWASP ZAP. These are documented, not executed by this release.
+- Local AI Security Assistant: analyze sanitized scan output using Ollama on this computer.
+- AI-agent safety guidance and 30-day learner curriculum.
+- No paid APIs or cloud AI services. Python standard library only.
+
 ## Quick start — Windows
+
+Run these commands from the `security-toolkit` folder:
+
 ~~~powershell
 py nexora_security.py init
 py nexora_security.py integrations
 py nexora_security.py doctor
 py -m unittest discover -s tests -v
 ~~~
-## Quick start — Linux/macOS
-~~~bash
-python3 nexora_security.py init
-python3 nexora_security.py integrations
-python3 nexora_security.py doctor
-python3 -m unittest discover -s tests -v
-~~~
-## Check an authorized asset
-~~~bash
-python nexora_security.py scope add --domain example.com --authorization "I own this domain / have written permission" --i-am-authorized
-python nexora_security.py headers --url https://example.com
-~~~
-Replace example.com with an authorized domain. The acknowledgement flag is a reminder, not legal proof.
-## Local dashboard
 
-The dashboard is a static, local-first browser interface. It stores scope records, findings, learning progress, and export counts in your browser's localStorage. It does not transmit this data to a server. Do not use a shared/public computer for sensitive notes.
-
-Start a local server from the security-toolkit directory:
+## Run the dashboard
 
 ~~~powershell
 py -m http.server 8000
 ~~~
 
-Then open http://127.0.0.1:8000/dashboard/ in your browser. Keep the terminal window open while using the dashboard. On Linux/macOS use `python3 -m http.server 8000`.
+Open http://127.0.0.1:8000/dashboard/ . This is the static workspace; its AI Assistant page requires the local assistant server described below.
 
-Dashboard features:
-- Overview and recent local activity
-- Authorized asset records and exclusions
-- Open-source integration registry
-- Manual finding register with severity and status
-- Markdown report and JSON backup import/export
-- Beginner learning checklist
+## Run the local AI Security Assistant
 
-The dashboard does not launch scanners or verify authorization. Use the Python CLI for the existing low-impact, scope-gated header check.
+1. Install and start [Ollama](https://ollama.com/) on your computer.
+2. Open PowerShell and download a model if you do not already have one:
 
-## Open-source integrations
-See docs/OPEN_SOURCE_INTEGRATIONS.md and docs/INTEGRATION_ROADMAP.md. The registry and doctor commands only list projects and detect local executable names. NEXORA does not install or execute third-party scanners in this release.
+~~~powershell
+ollama pull deepseek-r1:8b
+~~~
+
+This model is several GB and may run slowly on CPU-only or 16 GB RAM computers. If it is already installed, do not download it again. Check with `ollama list`.
+
+3. From the `security-toolkit` folder, start NEXORA:
+
+~~~powershell
+py ai_assistant.py
+~~~
+
+4. Open http://127.0.0.1:8765/ai-assistant.html
+
+Keep the terminal and Ollama running while using it. The server binds only to `127.0.0.1`. It talks to Ollama at `127.0.0.1:11434`; pasted evidence is not sent to a remote AI provider.
+
+The assistant accepts sanitized text evidence up to 30,000 characters. It provides a beginner-friendly explanation, estimated severity and confidence, safe lab verification ideas, remediation, and limitations. It does not run commands, fetch URLs, scan websites, or independently confirm a vulnerability. AI output may be incorrect and must be reviewed.
+
+## Linux/macOS
+
+Use `python3` instead of `py` for the commands above. Install Ollama separately using its official instructions.
+
+## Check an authorized asset
+
+~~~bash
+python nexora_security.py scope add --domain example.com --authorization "I own this domain / have written permission" --i-am-authorized
+python nexora_security.py headers --url https://example.com
+~~~
+
+Replace example.com with an asset you own or have explicit written permission to test. The acknowledgement flag is a reminder, not legal proof.
+
+## Privacy and safety
+- Scope, findings and learning progress stay in your local workspace/browser.
+- AI analysis is sent only to your local Ollama instance.
+- Do not paste passwords, API keys, cookies, personal information, or customer secrets.
+- Never commit secrets or customer data.
+- A tool's open-source licence does not grant permission to test any system.
+
 ## Learning
 - PortSwigger Web Security Academy: https://portswigger.net/web-security
 - OWASP Web Security Testing Guide: https://owasp.org/www-project-web-security-testing-guide/
 - OWASP Juice Shop: https://owasp.org/www-project-juice-shop/
-## Privacy
-Scope and reports are local. NEXORA does not upload findings, cookies, credentials, or scan output. Never commit secrets or customer data.
+
 ## Licence
-Original NEXORA code and documentation are MIT-licensed. Third-party tools retain their own licences. A licence does not grant permission to test any system.
+Original NEXORA code and documentation are MIT-licensed. Third-party tools retain their own licences.
