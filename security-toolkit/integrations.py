@@ -26,16 +26,32 @@ URL_CREDENTIALS = re.compile(r"(?i)(https?://)[^/@\\s:]+:[^/@\\s]+@")
 
 def clean(value: Any, limit: int = 4000) -> str:
     """Convert untrusted values to bounded text and redact common credential forms."""
-    if value is None:
-        return ""
-    if isinstance(value, (dict, list)):
-        value = json.dumps(value, ensure_ascii=False)
-    text = str(value).replace("\\x00", "")
-    text = URL_CREDENTIALS.sub(r"\\1[REDACTED]@", text)
-    for pattern in SECRET_PATTERNS:
-        text = pattern.sub(r"\\1[REDACTED]", text)
-    return text[:limit]
-
+    sensitive = {"authorization", "cookie", "set-cookie", "x-api-key", "x-auth-token",
+                 "api_key", "api-key", "access_token", "access-token", "refresh_token",
+                 "refresh-token", "client_secret", "client-secret", "password", "passwd", "secret"}
+    def redact(item: Any) -> Any:
+        if isinstance(item, dict):
+            safe = {}
+            for key, child in item.items():
+                normalized = str(key).lower()
+                if normalized in sensitive or any(word in normalized for word in ("password", "token", "secret", "cookie", "api_key", "api-key")):
+                    safe[str(key)] = "[REDACTED]"
+                else:
+                    safe[str(key)] = redact(child)
+            return safe
+        if isinstance(item, list):
+            return [redact(child) for child in item[:1000]]
+        if not isinstance(item, str):
+            return item
+        text = item.replace("\\x00", "")
+        text = URL_CREDENTIALS.sub(r"\\1[REDACTED]@", text)
+        for pattern in SECRET_PATTERNS:
+            text = pattern.sub(r"\\1[REDACTED]", text)
+        return text[:limit]
+    result = redact(value)
+    if isinstance(result, (dict, list)):
+        result = json.dumps(result, ensure_ascii=False)
+    return str(result or "")[:limit]
 
 def severity(value: Any) -> str:
     return SEVERITIES.get(str(value or "info").strip().lower(), "INFORMATIONAL")
