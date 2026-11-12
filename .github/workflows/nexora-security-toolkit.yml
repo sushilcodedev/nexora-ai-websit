@@ -38,6 +38,6 @@ jobs:
       - name: Check AI assistant JavaScript syntax
         run: node --check dashboard/ai-assistant.js
       - name: Run local AI assistant tests
-        run: python -m unittest tests/test_ai_assistant.py -v
+        run: python -m unittest discover -s tests -p 'test_ai_assistant.py' -v
       - name: Compile Python modules
         run: python -m py_compile ai_assistant.py nexora_security.py
