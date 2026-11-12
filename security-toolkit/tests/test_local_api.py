@@ -37,7 +37,7 @@ class LocalApiTests(unittest.TestCase):
     def test_skill_api_returns_registered_markdown(self):
         status, data, _ = self.get_json("/api/skill?id=security-triage")
         self.assertEqual(status, 200)
-        self.assertIn("Security Finding Triage", data["title"])
+        self.assertEqual(data["title"], "Security Triage")
         self.assertIn("defensive security", data["content"])
 
     def test_unknown_skill_is_not_found(self):
