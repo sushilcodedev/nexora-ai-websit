@@ -25,7 +25,7 @@ DATA_DIR = ROOT / ".nexora"
 SCOPE_FILE = DATA_DIR / "scope.json"
 REPORT_DIR = ROOT / "reports"
 INTEGRATIONS_FILE = ROOT / "integrations.json"
-USER_AGENT = "NEXORA-Security-Toolkit/0.1.0 (low-impact-header-checker)"
+USER_AGENT = "NEXORA-Security-Toolkit/0.2.0 (low-impact-header-checker)"
 
 
 class ScopeError(ValueError):
@@ -285,12 +285,12 @@ def load_integrations() -> list[dict[str, Any]]:
 def cmd_integrations(_: argparse.Namespace) -> int:
     print(f"{APP_NAME} {VERSION} — open-source integration registry")
     for item in load_integrations():
-        print(f"\\n{item['name']} [{item['license']}]")
+        print(f"\n{item['name']} [{item['license']}]")
         print(f"  Purpose: {item['purpose']}")
         print(f"  Binary: {item['binary']}")
         print(f"  Status: {item['status']}")
         print(f"  Source: {item['repository']}")
-    print("\\nRegistry only: NEXORA does not install or execute these tools.")
+    print("\nRegistry only: NEXORA does not install or execute these tools.")
     print("Confirm written authorization, scope, exclusions, and program rules before active testing.")
     return 0
 
