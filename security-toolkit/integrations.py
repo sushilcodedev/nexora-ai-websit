@@ -167,4 +167,4 @@ def markdown_report(tool: str, rows: list[dict[str, Any]]) -> str:
                       "### Evidence", clean(row.get("evidence")) or "Not supplied",
                       "", "### Description", clean(row.get("description")) or "Not supplied",
                       "", "### Remediation", clean(row.get("remediation")) or "Review manually", ""])
-    return "\\n".join(lines) + "\\n"
+    return "\n".join(lines) + "\n"
