@@ -77,6 +77,16 @@ py nexora_security.py import-results --tool subfinder --input .\\subdomains.txt
 
 The importer redacts common token/cookie patterns, limits input files to 10 MB and records to 10,000, and labels discovery/metadata records as informational. Review all imported data; scanner output can contain false positives. Run upstream scanners separately only after reviewing their documentation, licence, current version, exact authorized scope, exclusions, rate limits and program rules. No automatic scanner execution is enabled.
 
+## First-client service launch kit
+
+The repository includes a cautious, limited service offer and client-facing templates:
+- `SALES_KIT.md` — scope, pilot pricing, delivery checklist, limitations and sales process.
+- `OUTREACH_MESSAGES.md` — personalized outreach drafts and lead tracker fields.
+- `templates/client-authorization.md` — exact URL, permitted one-request activity, exclusions and written approval.
+- `templates/sample-report.md` — example report structure and limitations.
+
+The public NEXORA AI homepage now includes the limited website security hygiene pilot offer. Do not start client work until written authorization and exact scope are confirmed. This MVP does not provide penetration testing or comprehensive vulnerability assessment.
+
 ## Skills library
 
 Open the dashboard's **Skills Library** to browse eight Markdown skills:
