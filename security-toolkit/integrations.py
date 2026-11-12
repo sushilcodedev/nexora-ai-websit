@@ -44,9 +44,9 @@ def clean(value: Any, limit: int = 4000) -> str:
         if not isinstance(item, str):
             return item
         text = item.replace("\\x00", "")
-        text = URL_CREDENTIALS.sub(r"\\1[REDACTED]@", text)
+        text = URL_CREDENTIALS.sub(r"\1[REDACTED]@", text)
         for pattern in SECRET_PATTERNS:
-            text = pattern.sub(r"\\1[REDACTED]", text)
+            text = pattern.sub(r"\1[REDACTED]", text)
         return text[:limit]
     result = redact(value)
     if isinstance(result, (dict, list)):
