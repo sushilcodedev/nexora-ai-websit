@@ -142,6 +142,15 @@ class Handler(SimpleHTTPRequestHandler):
         if not self.local_host_only():
             return
         route = urlsplit(self.path)
+        if route.path == "/api/integrations":
+            try:
+                registry = json.loads((ROOT / "integrations.json").read_text(encoding="utf-8"))
+                if not isinstance(registry, list):
+                    raise ValueError("Integration registry must be a list.")
+                self.send_json(200, {"integrations": registry})
+            except (OSError, json.JSONDecodeError, ValueError):
+                self.send_json(500, {"error": "Integration registry is unavailable."})
+            return
         if route.path == "/api/skills":
             try:
                 entries = json.loads(SKILLS_INDEX.read_text(encoding="utf-8"))
