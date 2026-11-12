@@ -43,5 +43,24 @@ class AssistantInputTests(unittest.TestCase):
         self.assertIn("ignore previous instructions", messages[1]["content"])
 
 
+    def test_prompt_separates_skill_with_real_newlines(self):
+        messages = build_messages("sample evidence", "", "security-triage")
+        self.assertIn("\\n\\nSelected NEXORA skill:", messages[0]["content"])
+        self.assertNotIn("\\\\n\\\\nSelected NEXORA skill:", messages[0]["content"])
+
+    def test_context_limit_is_enforced(self):
+        with self.assertRaises(AssistantError):
+            validate_analysis_input({"source": "evidence", "context": "x" * 501})
+
+    def test_skill_registry_has_eight_valid_entries(self):
+        import json
+        from ai_assistant import SKILLS_INDEX
+        entries = json.loads(SKILLS_INDEX.read_text(encoding="utf-8"))
+        self.assertEqual(len(entries), 8)
+        for entry in entries:
+            title, instructions = load_skill(entry["id"])
+            self.assertTrue(title)
+            self.assertTrue(instructions.strip())
+
 if __name__ == "__main__":
     unittest.main()
