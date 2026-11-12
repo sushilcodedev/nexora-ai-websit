@@ -3,6 +3,7 @@
   const $ = (id) => document.getElementById(id);
   const status = $("connectionStatus");
   const modelSelect = $("modelSelect");
+  const skillSelect = $("skillSelect");
   const input = $("evidenceInput");
   const analyze = $("analyzeButton");
   const output = $("resultOutput");
@@ -21,6 +22,15 @@
       if (data.ollama !== "connected") {
         setStatus("offline", "Ollama is not reachable. Start Ollama, then refresh this page.");
         return;
+      }
+      const skillResponse = await fetch("/api/skills", {cache: "no-store"});
+      const skillData = await skillResponse.json();
+      if (skillResponse.ok && Array.isArray(skillData.skills)) {
+        skillSelect.replaceChildren();
+        skillData.skills.forEach((skill) => {
+          const group = skill.group === "learning" ? "Learning" : "AI Agent";
+          skillSelect.add(new Option(group + " · " + skill.title, skill.id));
+        });
       }
       const models = Array.isArray(data.models) ? data.models : [];
       modelSelect.replaceChildren();
@@ -61,7 +71,7 @@
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({source, model: modelSelect.value, context: $("contextInput").value})
+        body: JSON.stringify({source, model: modelSelect.value, context: $("contextInput").value, skill: skillSelect.value})
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Analysis failed.");
