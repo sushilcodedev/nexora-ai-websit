@@ -31,6 +31,9 @@
         <div class="assistant-status" id="connectionStatus"><span class="dot"></span><span>Checking local Ollama connection…</span></div>
         <section class="assistant-card">
           <label class="assistant-label" for="modelSelect">Local AI model</label>
+          <label class="assistant-label" for="skillSelect">NEXORA skill</label>
+          <select class="assistant-select" id="skillSelect"><option value="security-triage">Security Finding Triage</option></select>
+          <label class="assistant-label" for="modelSelect" style="margin-top:14px">Local AI model</label>
           <select class="assistant-select" id="modelSelect"><option value="deepseek-r1:8b">deepseek-r1:8b</option></select>
           <div class="assistant-controls">
             <label><span class="assistant-label">Authorized asset / context (optional)</span><input class="assistant-context" id="contextInput" maxlength="500" placeholder="Example: My own demo app running locally"></label>
