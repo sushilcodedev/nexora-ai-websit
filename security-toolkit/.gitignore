@@ -1,0 +1,8 @@
+# Local authorization scope and generated reports
+.nexora/
+reports/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
