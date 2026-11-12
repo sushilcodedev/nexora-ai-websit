@@ -19,11 +19,12 @@ from pathlib import Path
 from typing import Any
 
 APP_NAME = "NEXORA Security Toolkit"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / ".nexora"
 SCOPE_FILE = DATA_DIR / "scope.json"
 REPORT_DIR = ROOT / "reports"
+INTEGRATIONS_FILE = ROOT / "integrations.json"
 USER_AGENT = "NEXORA-Security-Toolkit/0.1.0 (low-impact-header-checker)"
 
 
@@ -271,14 +272,37 @@ def cmd_report(args: argparse.Namespace) -> int:
     return 0
 
 
+def load_integrations() -> list[dict[str, Any]]:
+    try:
+        data = json.loads(INTEGRATIONS_FILE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"Cannot read integration registry: {exc}") from exc
+    if not isinstance(data, list):
+        raise ValueError("Integration registry must be a JSON array.")
+    return data
+
+
+def cmd_integrations(_: argparse.Namespace) -> int:
+    print(f"{APP_NAME} {VERSION} — open-source integration registry")
+    for item in load_integrations():
+        print(f"\\n{item['name']} [{item['license']}]")
+        print(f"  Purpose: {item['purpose']}")
+        print(f"  Binary: {item['binary']}")
+        print(f"  Status: {item['status']}")
+        print(f"  Source: {item['repository']}")
+    print("\\nRegistry only: NEXORA does not install or execute these tools.")
+    print("Confirm written authorization, scope, exclusions, and program rules before active testing.")
+    return 0
+
+
 def cmd_doctor(_: argparse.Namespace) -> int:
     print(f"{APP_NAME} {VERSION}")
     print(f"Python: {sys.version.split()[0]} ({'OK' if sys.version_info >= (3, 10) else 'upgrade required'})")
-    for binary in ("nuclei", "httpx", "zap.sh", "zaproxy"):
-        print(f"{binary}: {shutil.which(binary) or 'not installed (optional)'}")
-    print("No scanners were started and no network requests were made.")
+    for item in load_integrations():
+        binary = item['binary']
+        print(f"{item['name']} ({binary}): {shutil.which(binary) or 'not installed (optional)'}")
+    print("Detection only: no scanners were started and no network requests were made.")
     return 0
-
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=APP_NAME)
@@ -316,6 +340,9 @@ def build_parser() -> argparse.ArgumentParser:
     report.add_argument("--authorization-reference", default="")
     report.add_argument("--output")
     report.set_defaults(func=cmd_report)
+
+    integrations = sub.add_parser("integrations", help="list documented open-source integrations")
+    integrations.set_defaults(func=cmd_integrations)
 
     doctor = sub.add_parser("doctor", help="check local prerequisites and optional tool paths")
     doctor.set_defaults(func=cmd_doctor)
