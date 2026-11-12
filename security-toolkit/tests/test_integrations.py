@@ -39,5 +39,37 @@ class IntegrationImportTests(unittest.TestCase):
             self.assertEqual(rows[0]["severity"], "MEDIUM")
 
 
+    def test_redacts_common_nested_credentials_and_url_auth(self):
+        raw = {"headers": {"Cookie": "session=abc", "Authorization": "Bearer xyz"}, "url": "https://user:pass@example.test"}
+        result = clean(raw)
+        self.assertNotIn("session=abc", result)
+        self.assertNotIn("Bearer xyz", result)
+        self.assertNotIn("user:pass@", result)
+        self.assertIn("[REDACTED]", result)
+
+    def test_rejects_unknown_tool(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "in.txt"
+            path.write_text("x", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                import_file("unknown", path)
+
+    def test_rejects_malformed_jsonl(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "bad.jsonl"
+            path.write_text("{not-json}", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "Invalid JSON"):
+                import_file("nuclei", path)
+
+    def test_markdown_report_uses_real_line_breaks(self):
+        report = __import__("integrations").markdown_report("nuclei", [])
+        self.assertIn("\\n- Records: 0\\n", report)
+
+    def test_zap_record_limit_is_enforced(self):
+        from integrations import parse_zap, MAX_RECORDS
+        alerts = [{"alert": "test"} for _ in range(MAX_RECORDS + 1)]
+        with self.assertRaisesRegex(ValueError, "10,000"):
+            parse_zap({"site": [{"alerts": alerts}]})
+
 if __name__ == "__main__":
     unittest.main()
