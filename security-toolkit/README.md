@@ -28,13 +28,17 @@ py nexora_security.py import-results --tool nuclei --input path\\to\\nuclei.json
 py -m unittest discover -s tests -v
 ~~~
 
-## Run the dashboard
+## Run the dashboard and local AI server
+
+Start the local NEXORA server from the `security-toolkit` folder:
 
 ~~~powershell
-py -m http.server 8000
+py ai_assistant.py
 ~~~
 
-Open http://127.0.0.1:8000/dashboard/ . This is the static workspace; its AI Assistant page requires the local assistant server described below.
+Open the dashboard at http://127.0.0.1:8765/ , the AI assistant at http://127.0.0.1:8765/ai-assistant.html , and the Skills Library at http://127.0.0.1:8765/skills.html . The dashboard, skills and integration registry are served by this same local server. Keep the terminal open while using it.
+
+Use only the localhost URLs above. The server binds to 127.0.0.1 and does not expose the workspace to your LAN.
 
 ## Run the local AI Security Assistant
 
